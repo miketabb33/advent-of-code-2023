@@ -1,0 +1,1 @@
+bun 'puzzles/day'$1'/index.ts'

@@ -1,0 +1,22 @@
+{
+  "name": "advent-of-code-2023",
+  "module": "index.ts",
+  "devDependencies": {
+    "bun-types": "latest",
+    "prettier": "^3.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "startDay": "bash scripts/startDay.bash",
+    "runDay": "bash scripts/runDay.bash"
+  },
+  "type": "module",
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  }
+}
