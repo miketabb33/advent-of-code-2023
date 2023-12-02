@@ -1,4 +1,4 @@
-export const getCombinedNumber = (line: string) => {
+export const getCombinedNumber1 = (line: string) => {
   const firstNumber = findFirstNumber(line)
   const lastNumber = findLastNumber(line)
   return +`${firstNumber}${lastNumber}`
