@@ -1,2 +1,2 @@
-aoc -d $1 > temp.txt
+aoc -d $1 download
 bun scripts/tools/startDayFileBuilder.ts $1

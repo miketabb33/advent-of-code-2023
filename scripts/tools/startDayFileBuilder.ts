@@ -1,17 +1,32 @@
+import { writeFileSync } from 'fs'
 import {
   createDayDirectoryUnlessExists,
-  createFilesForDay,
-  getInstructions,
+  getTempFile,
+  makePart1TestFile,
+  isBufferSafe,
+  makePart1ProdFile,
+  makeIndex,
 } from './puzzleCRUD'
 
 const main = () => {
   const day = process.argv[2]
-  if (!day) throw new Error('Missing day argument in command')
+  if (!day) {
+    console.log('Missing day argument in command')
+    return
+  }
 
-  const instructionBuffer = getInstructions()
-  if (!instructionBuffer || instructionBuffer.length === 0) {
+  const instructionBuffer = getTempFile('puzzle.md')
+  if (!isBufferSafe(instructionBuffer)) {
     console.log(
       `Instructions for day ${day} could not be found. Please try again later.`
+    )
+    return
+  }
+
+  const inputBuffer = getTempFile('input')
+  if (!isBufferSafe(inputBuffer)) {
+    console.log(
+      `Input for day ${day} could not be found. Please try again later.`
     )
     return
   }
@@ -22,7 +37,12 @@ const main = () => {
     return
   }
 
-  createFilesForDay(path, instructionBuffer)
+  makeIndex(path)
+  makePart1TestFile(path)
+  makePart1ProdFile(path)
+  writeFileSync(`${path}/puzzle.md`, instructionBuffer)
+  writeFileSync(`${path}/input`, inputBuffer)
+
   console.log('Files Created')
 }
 

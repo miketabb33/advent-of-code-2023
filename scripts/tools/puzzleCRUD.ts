@@ -2,30 +2,41 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 
 export const DAY_DIR_NAME = (day: string) => `puzzles/day${day}`
 
-export const getInstructions = () => {
-  const TEMP_FILENAME = 'temp.txt'
-  const instructions = readFileSync(TEMP_FILENAME)
-  if (!instructions) throw new Error('Instructions not found')
-  rmSync(TEMP_FILENAME)
-  return instructions
+type FileName = 'puzzle.md' | 'input'
+
+export const getTempFile = (name: FileName) => {
+  const tempFile = readFileSync(name)
+  if (!tempFile) throw new Error(`${name} not found`)
+  rmSync(name)
+  return tempFile
 }
 
 export const createDayDirectoryUnlessExists = (day: string) => {
   const dayDir = DAY_DIR_NAME(day)
   if (existsSync(dayDir)) return null
   mkdirSync(dayDir)
+  mkdirSync(`${dayDir}/part1`)
   return dayDir
 }
 
-export const createFilesForDay = (path: string, instructions: Buffer) => {
-  writeFileSync(`${path}/index.ts`, '')
-  writeFileSync(`${path}/instructions.txt`, instructions)
-  makeTestFile(path)
-}
-
-const makeTestFile = (path: string) => {
+export const makeIndex = (path: string) =>
   writeFileSync(
-    `${path}/index.test.ts`,
+    `${path}/index.ts`,
+    "import { readFileSync } from 'fs'\nimport { starter } from './part1/part1'\n\nconst inputBuffer = readFileSync(`${__dirname}/input`)\n\nconst answer1 = starter(inputBuffer.toString())\n\nconsole.log('answer1: ', answer1)\n"
+  )
+
+export const makePart1TestFile = (path: string) => {
+  writeFileSync(
+    `${path}/part1/part1.test.ts`,
     "import { describe, expect, it } from 'bun:test'\n\ndescribe('', () => {\n  it('', () => {\n    expect(true).toEqual(false)\n  })\n})\n"
   )
 }
+
+export const makePart1ProdFile = (path: string) => {
+  writeFileSync(
+    `${path}/part1/part1.ts`,
+    'export const starter = (input: string) =>\n  `Ready, solve that puzzle! Input: ${input}`\n'
+  )
+}
+
+export const isBufferSafe = (buffer?: Buffer) => !!buffer && buffer.length > 0
