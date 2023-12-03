@@ -1,8 +1,7 @@
 import { readFileSync } from 'fs'
-import { starter } from './part1/parseInputIntoSchematic'
+import { parseInputIntoSchematic } from './part1/parseInputIntoSchematic'
+import { answer1 } from './answer1'
 
 const inputBuffer = readFileSync(`${__dirname}/input`)
 
-const answer1 = starter(inputBuffer.toString())
-
-console.log('answer1: ', answer1)
+console.log('answer1: ', answer1(inputBuffer.toString()))

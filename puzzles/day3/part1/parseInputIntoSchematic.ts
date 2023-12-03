@@ -1,8 +1,5 @@
 import { SchematicLine, SchematicResult } from '../types'
 
-export const starter = (input: string) =>
-  `Ready, solve that puzzle! Input: ${input}`
-
 export const parseInputIntoSchematic = (input: string): SchematicLine[] => {
   return input
     .split('\n')
