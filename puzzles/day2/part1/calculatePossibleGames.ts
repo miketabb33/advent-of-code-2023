@@ -1,4 +1,4 @@
-import { Game, GameResult } from './types'
+import { Game, GameResult } from '../types'
 
 const RED_LIMIT = 12
 const GREEN_LIMIT = 13

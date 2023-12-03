@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { parseLineIntoGame } from './parseInputIntoGames'
-import { Game } from './types'
+import { Game } from '../types'
 
 describe('Parse Input Into Games', () => {
   it('should return a game with 1 round', () => {

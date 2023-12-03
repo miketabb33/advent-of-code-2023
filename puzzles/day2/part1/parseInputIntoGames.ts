@@ -1,4 +1,4 @@
-import { Game, Round } from './types'
+import { Game, Round } from '../types'
 
 export const parseInputIntoGames = (input: string): Game[] => {
   const lines = input.split('\n').filter((line) => line !== '')

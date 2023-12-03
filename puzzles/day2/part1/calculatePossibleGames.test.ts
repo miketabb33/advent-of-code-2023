@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { calculateGameResult } from './calculatePossibleGames'
-import { Game } from './types'
+import { Game } from '../types'
 
 describe('Calculate Game Result', () => {
   it('should return possible when the only round is possible', () => {

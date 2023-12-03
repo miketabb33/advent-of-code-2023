@@ -1,3 +1,8 @@
+export type GamePower = {
+  power: number
+  game: Game
+}
+
 export type GameResult = {
   result: 'possible' | 'impossible'
   game: Game
