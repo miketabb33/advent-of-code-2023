@@ -89,6 +89,11 @@ describe('Parse Number', () => {
     expect(parseNumbers(line)[0]).toEqual({ index: 1, value: '664' })
     expect(parseNumbers(line)[1]).toEqual({ index: 6, value: '598' })
   })
+  it('should build number at when at end', () => {
+    const line = '....816'
+    expect(parseNumbers(line).length).toEqual(1)
+    expect(parseNumbers(line)[0]).toEqual({ index: 4, value: '816' })
+  })
 })
 
 describe('Is Symbol', () => {

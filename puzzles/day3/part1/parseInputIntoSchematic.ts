@@ -40,6 +40,10 @@ export const parseNumbers = (line: string) => {
       }
     }
   })
+  if (cache) {
+    numbers.push(cache)
+    cache = null
+  }
   return numbers
 }
 
