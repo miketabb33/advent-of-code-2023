@@ -16,8 +16,31 @@ export const parseLineIntoScratchOff = (line: string): ScratchOff => {
 
   const winningNumbers: number[] = convertToArrOfNumbers(winningAndExisting[0])
   const existingNumbers: number[] = convertToArrOfNumbers(winningAndExisting[1])
+  const matches = findMatches(winningNumbers, existingNumbers)
+  const worth = getWorth(matches)
 
-  return { cardId: +cardId, winningNumbers, existingNumbers }
+  return { cardId: +cardId, winningNumbers, existingNumbers, matches, worth }
+}
+
+export const getWorth = (matches: number[]) => {
+  let worth = 0
+
+  matches.forEach((match, i) => {
+    if (i === 0) worth = 1
+    else worth *= 2
+  })
+  return worth
+}
+
+const findMatches = (winningNumbers: number[], existingNumbers: number[]) => {
+  const matches: number[] = []
+
+  winningNumbers.forEach((winningNumber) => {
+    existingNumbers.forEach((existingNumber) => {
+      if (winningNumber === existingNumber) matches.push(winningNumber)
+    })
+  })
+  return matches
 }
 
 const convertToArrOfNumbers = (seq: string): number[] =>
