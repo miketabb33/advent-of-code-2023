@@ -36,14 +36,8 @@ export const findPartNumbersForLine = (line: SchematicLine): number[] => {
   const confirmedPartNumbers: number[] = []
 
   line.symbols.forEach((symbol) => {
-    line.partNumbers.forEach((number) => {
-      if (symbol.index === number.index - 1)
-        confirmedPartNumbers.push(+number.value)
-
-      const lastIndexOfNumber = number.index + number.value.length
-      if (symbol.index === lastIndexOfNumber)
-        confirmedPartNumbers.push(+number.value)
-    })
+    const parts = findAdjacentParts(symbol, line.partNumbers)
+    parts.forEach((part) => confirmedPartNumbers.push(part))
   })
 
   return confirmedPartNumbers
@@ -61,11 +55,22 @@ export const findPartNumbersForLines = ({
   const confirmedPartNumbers: number[] = []
 
   symbols.forEach((symbol) => {
-    parts.forEach((part) => {
-      const aboveStart = part.index - 1 <= symbol.index
-      const belowEnd = part.index + part.value.length >= symbol.index
-      if (aboveStart && belowEnd) confirmedPartNumbers.push(+part.value)
-    })
+    const partNumbers = findAdjacentParts(symbol, parts)
+    partNumbers.forEach((part) => confirmedPartNumbers.push(part))
+  })
+
+  return confirmedPartNumbers
+}
+
+export const findAdjacentParts = (
+  symbol: SchematicResult,
+  parts: SchematicResult[]
+) => {
+  const confirmedPartNumbers: number[] = []
+  parts.forEach((part) => {
+    const aboveStart = part.index - 1 <= symbol.index
+    const belowEnd = part.index + part.value.length >= symbol.index
+    if (aboveStart && belowEnd) confirmedPartNumbers.push(+part.value)
   })
   return confirmedPartNumbers
 }

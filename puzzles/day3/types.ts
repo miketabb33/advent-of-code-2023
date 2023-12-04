@@ -1,5 +1,4 @@
 export type SchematicLine = {
-  lineNumber: number
   symbols: SchematicResult[]
   partNumbers: SchematicResult[]
 }

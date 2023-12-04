@@ -5,10 +5,13 @@ export const DAY_DIR_NAME = (day: string) => `puzzles/day${day}`
 type FileName = 'puzzle.md' | 'input'
 
 export const getTempFile = (name: FileName) => {
-  const tempFile = readFileSync(name)
-  if (!tempFile) throw new Error(`${name} not found`)
-  rmSync(name)
-  return tempFile
+  try {
+    const tempFile = readFileSync(name)
+    rmSync(name)
+    return tempFile
+  } catch {
+    return new Buffer('')
+  }
 }
 
 export const createDayDirectoryUnlessExists = (day: string) => {

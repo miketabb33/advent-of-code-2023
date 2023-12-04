@@ -16,7 +16,6 @@ describe('Parse Input Into Schematic', () => {
     const input = '.....+.58.'
     const results = parseInputIntoSchematic(input)
     expect(results.length).toEqual(1)
-    expect(results[0].lineNumber).toEqual(1)
 
     expect(results[0].symbols.length).toEqual(1)
     expect(results[0].symbols[0]).toEqual({ index: 5, value: '+' })
@@ -29,8 +28,6 @@ describe('Parse Input Into Schematic', () => {
       '.....+.58.\n311...672...34...391.....591......828.......................738....................223....803..472..................................714.840.'
     const results = parseInputIntoSchematic(input)
     expect(results.length).toEqual(2)
-    expect(results[0].lineNumber).toEqual(1)
-    expect(results[1].lineNumber).toEqual(2)
 
     expect(results[0].symbols.length).toEqual(1)
     expect(results[0].symbols[0]).toEqual({ index: 5, value: '+' })

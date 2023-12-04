@@ -8,7 +8,6 @@ export const parseInputIntoSchematic = (input: string): SchematicLine[] => {
       const symbols = parseSymbols(line)
       const partNumbers = parseNumbers(line)
       const schematicLine: SchematicLine = {
-        lineNumber: index + 1,
         symbols,
         partNumbers,
       }
