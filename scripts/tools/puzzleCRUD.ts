@@ -25,7 +25,7 @@ export const createDayDirectoryUnlessExists = (day: string) => {
 export const makeIndex = (path: string) =>
   writeFileSync(
     `${path}/index.ts`,
-    "import { readFileSync } from 'fs'\nimport { starter } from './part1/part1'\n\nconst inputBuffer = readFileSync(`${__dirname}/input`)\n\nconst answer1 = starter(inputBuffer.toString())\n\nconsole.log('answer1: ', answer1)\n"
+    "import { readFileSync } from 'fs'\nimport { starter } from './part1/part1'\n\nconst input = readFileSync(`${__dirname}/input`).toString()\n\nconst answer1 = starter(input)\n\nconsole.log('answer1: ', answer1)\n"
   )
 
 export const makePart1TestFile = (path: string) => {
