@@ -5,7 +5,32 @@ export const mapAlmanac = (almanac: Almanac) => {
     almanac.seeds,
     almanac.seedToSoil
   )
-  console.log(soilToSeedResults)
+  const soilToFertilizerResults = findCorrespondingNumbersForSection(
+    soilToSeedResults,
+    almanac.soilToFertilizer
+  )
+  const fertilizerToWaterResults = findCorrespondingNumbersForSection(
+    soilToFertilizerResults,
+    almanac.fertilizerToWater
+  )
+  const waterToLightResults = findCorrespondingNumbersForSection(
+    fertilizerToWaterResults,
+    almanac.waterToLight
+  )
+  const lightToTemperatureResults = findCorrespondingNumbersForSection(
+    waterToLightResults,
+    almanac.lightToTemperature
+  )
+  const temperatureToHumidityResults = findCorrespondingNumbersForSection(
+    lightToTemperatureResults,
+    almanac.temperatureToHumidity
+  )
+  const humidityToLocationResults = findCorrespondingNumbersForSection(
+    temperatureToHumidityResults,
+    almanac.humidityToLocation
+  )
+
+  return humidityToLocationResults
 }
 
 export const findCorrespondingNumbersForSection = (
@@ -35,7 +60,12 @@ export const findCorrespondingNumberFromMap = (
   target: number,
   mapper: AlmanacMap
 ): number => {
-  const sourceIndex = mapper.sourceRange.indexOf(target)
-  if (sourceIndex !== -1) return mapper.destinationRange[sourceIndex]
+  const sourceStart = mapper.sourceRangStart
+  const sourceEnd = mapper.sourceRangStart + mapper.rangeLength
+
+  if (target >= sourceStart && target < sourceEnd) {
+    const diff = mapper.destinationRangeStart - mapper.sourceRangStart
+    return target + diff
+  }
   return target
 }

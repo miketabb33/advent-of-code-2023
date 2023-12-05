@@ -13,6 +13,4 @@ export type AlmanacMap = {
   destinationRangeStart: number
   sourceRangStart: number
   rangeLength: number
-  destinationRange: number[]
-  sourceRange: number[]
 }
