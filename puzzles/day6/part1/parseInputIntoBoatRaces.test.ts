@@ -13,6 +13,11 @@ describe('Parse Input Into Boat Races', () => {
     expect(result[0].milliseconds).toEqual(7)
     expect(result[0].millimeters).toEqual(9)
 
+    expect(result[0].options.length).toEqual(8)
+    expect(result[0].options).toEqual([0, 6, 10, 12, 12, 10, 6, 0])
+
+    expect(result[0].winningOptions.length).toEqual(4)
+
     expect(result[1].milliseconds).toEqual(15)
     expect(result[1].millimeters).toEqual(40)
 

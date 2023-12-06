@@ -9,12 +9,32 @@ export const parseInputIntoBoatRaces = (input: string): BoatRace[] => {
   const distArr = extractValue(line[1], 'Distance:')
 
   return timeArr.map((time, i) => {
+    const milliseconds = +time
+    const millimeters = +distArr[i]
+    const options = parseOptions(milliseconds)
+
     const boatRace: BoatRace = {
-      milliseconds: +time,
-      millimeters: +distArr[i],
+      milliseconds,
+      millimeters,
+      options,
+      winningOptions: parseWinningOptions(options, millimeters),
     }
     return boatRace
   })
+}
+
+const parseOptions = (milliseconds: number): number[] => {
+  let options: number[] = []
+
+  for (let i = 0; i <= milliseconds; i++) {
+    const timeLeft = milliseconds - i
+    options.push(timeLeft * i)
+  }
+  return options
+}
+
+const parseWinningOptions = (options: number[], millimeters: number) => {
+  return options.filter((option) => option > millimeters)
 }
 
 const extractValue = (line: string, key: string) => {

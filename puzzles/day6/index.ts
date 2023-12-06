@@ -1,8 +1,6 @@
 import { readFileSync } from 'fs'
-import { parseInputIntoBoatRaces } from './part1/parseInputIntoBoatRaces'
+import { day6Answer1 } from './part1/day6Answer1'
 
 const input = readFileSync(`${__dirname}/input`).toString()
 
-const answer1 = parseInputIntoBoatRaces(input)
-
-console.log('answer1: ', answer1)
+console.log('answer1: ', day6Answer1(input))
