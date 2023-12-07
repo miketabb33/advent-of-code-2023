@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'bun:test'
-import { parseAlmanacInput2 } from './parseAlmanacInput2'
+import { parseAlmanacSections } from './parseAlmanacSections'
 import { readFileSync } from 'fs'
 
 describe('Parse Almanac Input', () => {
-  const exampleInput = readFileSync(`${__dirname}/../exampleInput`).toString()
+  const exampleInput = readFileSync(`${__dirname}/../exampleInput`)
+    .toString()
+    .split('\n\n')
+    .slice(1)
   it('it should parse', () => {
-    const result = parseAlmanacInput2(exampleInput)
+    const result = parseAlmanacSections(exampleInput)
 
-    expect(result.seeds).toEqual([
-      79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 55, 56, 57, 58,
-      59, 60, 61, 62, 63, 64, 65, 66, 67,
-    ])
     expect(result.seedToSoil.length).toEqual(2)
 
     expect(result.seedToSoil[0].destinationRangeStart).toEqual(50)

@@ -1,31 +1,31 @@
-import { Almanac, AlmanacMap } from './types'
+import { AlmanacSectionMap, AlmanacSections } from './types'
 
-export const mapAlmanac = (almanac: Almanac) => {
-  const soilToSeedResults = findCorrespondingNumbersForSection(
-    almanac.seeds,
+export const seedMapper = (seed: number, almanac: AlmanacSections) => {
+  const soilToSeedResults = findCorrespondingNumberFromMaps(
+    seed,
     almanac.seedToSoil
   )
-  const soilToFertilizerResults = findCorrespondingNumbersForSection(
+  const soilToFertilizerResults = findCorrespondingNumberFromMaps(
     soilToSeedResults,
     almanac.soilToFertilizer
   )
-  const fertilizerToWaterResults = findCorrespondingNumbersForSection(
+  const fertilizerToWaterResults = findCorrespondingNumberFromMaps(
     soilToFertilizerResults,
     almanac.fertilizerToWater
   )
-  const waterToLightResults = findCorrespondingNumbersForSection(
+  const waterToLightResults = findCorrespondingNumberFromMaps(
     fertilizerToWaterResults,
     almanac.waterToLight
   )
-  const lightToTemperatureResults = findCorrespondingNumbersForSection(
+  const lightToTemperatureResults = findCorrespondingNumberFromMaps(
     waterToLightResults,
     almanac.lightToTemperature
   )
-  const temperatureToHumidityResults = findCorrespondingNumbersForSection(
+  const temperatureToHumidityResults = findCorrespondingNumberFromMaps(
     lightToTemperatureResults,
     almanac.temperatureToHumidity
   )
-  const humidityToLocationResults = findCorrespondingNumbersForSection(
+  const humidityToLocationResults = findCorrespondingNumberFromMaps(
     temperatureToHumidityResults,
     almanac.humidityToLocation
   )
@@ -33,18 +33,9 @@ export const mapAlmanac = (almanac: Almanac) => {
   return humidityToLocationResults
 }
 
-export const findCorrespondingNumbersForSection = (
-  targets: number[],
-  mapper: AlmanacMap[]
-) => {
-  return targets.map((target) =>
-    findCorrespondingNumberFromMaps(target, mapper)
-  )
-}
-
-export const findCorrespondingNumberFromMaps = (
+const findCorrespondingNumberFromMaps = (
   target: number,
-  mapper: AlmanacMap[]
+  mapper: AlmanacSectionMap[]
 ) => {
   let results: number[] = []
 
@@ -56,9 +47,9 @@ export const findCorrespondingNumberFromMaps = (
   return results.length === 0 ? target : results[0]
 }
 
-export const findCorrespondingNumberFromMap = (
+const findCorrespondingNumberFromMap = (
   target: number,
-  mapper: AlmanacMap
+  mapper: AlmanacSectionMap
 ): number => {
   const sourceStart = mapper.sourceRangStart
   const sourceEnd = mapper.sourceRangStart + mapper.rangeLength
@@ -67,5 +58,6 @@ export const findCorrespondingNumberFromMap = (
     const diff = mapper.destinationRangeStart - mapper.sourceRangStart
     return target + diff
   }
+
   return target
 }

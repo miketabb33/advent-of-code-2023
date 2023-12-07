@@ -1,4 +1,4 @@
-import { Almanac, AlmanacMap } from '../types'
+import { Almanac, AlmanacMap } from './types'
 
 export const parseAlmanacInput = (input: string): Almanac => {
   const allSections = input.split('\n\n')

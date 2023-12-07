@@ -4,7 +4,7 @@ import {
   findCorrespondingNumberFromMaps,
   findCorrespondingNumbersForSection,
 } from './mapAlmanac'
-import { seedToSoilA, seedToSoilB } from './almanacMap.mock'
+import { AlmanacMap } from './types'
 
 describe('Find Corresponding Numbers For Sections', () => {
   it('should return target number when number is not mapped', () => {
@@ -37,3 +37,15 @@ describe('Find Corresponding Number From Map', () => {
     expect(result).toEqual(81)
   })
 })
+
+const seedToSoilA: AlmanacMap = {
+  destinationRangeStart: 50,
+  sourceRangStart: 98,
+  rangeLength: 2,
+}
+
+const seedToSoilB: AlmanacMap = {
+  destinationRangeStart: 52,
+  sourceRangStart: 50,
+  rangeLength: 48,
+}
