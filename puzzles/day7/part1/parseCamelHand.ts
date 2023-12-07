@@ -1,7 +1,7 @@
 import { CamelHand, CamelHandType } from './type'
 
 export const parseCamelHand = (input: string): CamelHand[] => {
-  const lines = input.split('\n')
+  const lines = input.split('\n').filter((x) => !!x)
 
   return lines.map((line) => {
     const parts = line.split(' ')

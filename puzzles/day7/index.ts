@@ -1,8 +1,6 @@
 import { readFileSync } from 'fs'
-import { parseCamelHand } from './part1/parseCamelHand'
+import { day7Part1 } from './part1/day7Part1'
 
 const input = readFileSync(`${__dirname}/input`).toString()
 
-const answer1 = parseCamelHand(input)
-
-console.log('answer1: ', answer1)
+console.log('answer1: ', day7Part1(input))
