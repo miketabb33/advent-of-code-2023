@@ -14,15 +14,20 @@ export const findEndingNodeStepsRequired = (
   let foundEnd = false
   let currentNode = startingNode
   let steps = 0
-
   while (!foundEnd) {
     const currentInstruction = instructions[steps]
     currentNode = findNextNode(currentInstruction, currentNode, network)
-    if (isLastNode(currentNode)) foundEnd = true
+    if (isLastNode(currentNode) && isLastInstruction(instructions, steps))
+      foundEnd = true
     steps++
   }
 
   return steps
+}
+
+export const isLastInstruction = (instructions: string[], step: number) => {
+  const distanceFromEnd = (step + 1) % instructions.length
+  return distanceFromEnd === 0
 }
 
 const findNextNode = (
