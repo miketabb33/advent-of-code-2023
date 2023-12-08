@@ -63,6 +63,8 @@ Answer:
 
 You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=%22Camel+Cards%22+%2D+Day+7+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F7&related=ericwastl&hashtags=AdventOfCode) [Mastodon](<javascript:void(0);>)] this puzzle.
 
+--- Part Two ---
+
 To make things a little more interesting, the Elf introduces one additional rule. Now, J cards are jokers - wildcards that can act like whatever card would make the hand the strongest type possible.
 
 To balance this, J cards are now the weakest individual cards, weaker even than 2. The other cards stay in the same order: A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J.
