@@ -1,58 +1,14 @@
-import { Sequence } from './types'
-
-export const parseSequenceHistory = (input: string) => {
-  const lines = input
-    .trim()
-    .split('\n')
-    .filter((x) => !!x)
-
-  return lines.map((line) => {
-    const history = line
-      .trim()
-      .split(' ')
-      .map((x) => {
-        if (isNaN(+x)) {
-          throw new Error(`line contains - Not a number: ${line}`)
-        }
-        return +x
-      })
-
-    const sequence: Sequence = {
-      history,
-      differences: calculateDifferences(history),
-    }
-    return sequence
-  })
-}
-
-const calculateDifferences = (history: number[]): number[][] => {
-  const diff: number[][] = [history]
-
-  let i = 0
-  while (!allZeros(diff[i])) {
-    diff.push(getDifferenceRow(diff[i]))
-    i++
+export const parseSequenceHistory = (line: string): number => {
+  const history = line.split(' ').map(Number)
+  const seq = [history]
+  while (seq.at(-1)!.some((n) => n !== 0)) {
+    const last = seq.at(-1)
+    const next = last!.slice(1).map((v, i) => v - last![i])
+    seq.push(next)
   }
-
-  return diff
-}
-
-const getDifferenceRow = (sequence: number[]) => {
-  const cache: number[] = []
-
-  for (let i = 0; i < sequence.length; i++) {
-    const current = sequence[i]
-    const next = sequence[i + 1]
-
-    if (next) {
-      const result = next - current
-      if (isNaN(result))
-        throw new Error(`Not a number: ${JSON.stringify(sequence)}`)
-      cache.push(result)
-    }
+  seq.at(-1)!.push(0)
+  for (let i = seq.length - 2; i >= 0; i--) {
+    seq[i].push(seq[i].at(-1)! + seq[i + 1].at(-1)!)
   }
-
-  return cache
+  return seq[0].at(-1)!
 }
-
-export const allZeros = (arr: number[]): boolean => arr.every((x) => x === 0)
