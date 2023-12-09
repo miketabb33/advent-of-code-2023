@@ -6,8 +6,8 @@ describe('Parse Sequence History', () => {
     const results = parseSequenceHistory('0 3 6 9 12 15')
     expect(results).toEqual(18)
   })
-  // it('should parse lines for example 2', () => {
-  //   const results = parseSequenceHistory('1 3 6 10 15 21')
-  //   expect(results).toEqual(28)
-  // })
+  it('should parse lines for example 2', () => {
+    const results = parseSequenceHistory('1 3 6 10 15 21')
+    expect(results).toEqual(28)
+  })
 })
