@@ -1,5 +1,12 @@
 import { NetworkNode } from '../part1/types'
 
+type NodeLCM = {
+  index: number
+  steps: number
+  startingValue: string
+  loopLength: number
+}
+
 export const findAllNodesEndingWith = (
   letter: string,
   nodes: NetworkNode[]
@@ -14,16 +21,37 @@ export const findEndingNodesStepsRequired = (
   let currentNodes = startingNodes
   let steps = 0
 
+  let lcm: NodeLCM[] = currentNodes.map((_, i) => {
+    return {
+      index: i,
+      steps: -1,
+      startingValue: startingNodes[i].origin,
+      loopLength: -1,
+    }
+  })
+
   while (!foundEnd) {
     const currentInstruction = getInstruction(steps, instructions)
     currentNodes = findNextNodeGroup(currentInstruction, currentNodes, network)
     foundEnd = allNodesEndInZ(currentNodes)
 
-    if (steps % 50_000 === 0) console.log(steps)
-    if (steps > 10_000_000) {
-      console.error('infinite loop')
-      foundEnd = true
-    }
+    // TAKING A STAB AT LCM APPROACH
+    // if (steps % 50_000 === 0 && steps > 1) console.log(steps)
+
+    // currentNodes.forEach((node, i) => {
+    //   // Sets how many steps until a cycle reaches the end.
+    //   if (nodeEndsWith('Z', node) && lcm[i].steps === -1) {
+    //     lcm[i].steps = steps
+    //   }
+
+    //   if (i > 0 && lcm[i].startingValue === node.origin) {
+    //     lcm[i].loopLength = steps
+    //   }
+    // })
+
+    // // Stops the Loop once all steps have been set
+    // if (lcm.filter((x) => x.steps === -1).length === 0) foundEnd = true
+
     steps++
   }
 
