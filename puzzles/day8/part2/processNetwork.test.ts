@@ -47,7 +47,7 @@ describe('Find Ending Node Steps', () => {
       startingNodes,
       network
     )
-    expect(result).toEqual(6)
+    expect(result).toEqual([2, 3])
   })
 })
 

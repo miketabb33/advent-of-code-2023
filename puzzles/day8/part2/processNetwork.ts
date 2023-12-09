@@ -1,8 +1,8 @@
 import { NetworkNode } from '../part1/types'
 
-type NodeLCM = {
+type NodeLoop = {
   index: number
-  steps: number
+  loopStart: number
   startingValue: string
   loopLength: number
 }
@@ -16,15 +16,15 @@ export const findEndingNodesStepsRequired = (
   instructions: string[],
   startingNodes: NetworkNode[],
   network: NetworkNode[]
-): number => {
+): number[] => {
   let foundEnd = false
   let currentNodes = startingNodes
   let steps = 0
 
-  let lcm: NodeLCM[] = currentNodes.map((_, i) => {
+  let loops: NodeLoop[] = currentNodes.map((_, i) => {
     return {
       index: i,
-      steps: -1,
+      loopStart: -1,
       startingValue: startingNodes[i].origin,
       loopLength: -1,
     }
@@ -35,28 +35,28 @@ export const findEndingNodesStepsRequired = (
     currentNodes = findNextNodeGroup(currentInstruction, currentNodes, network)
     foundEnd = allNodesEndInZ(currentNodes)
 
-    // TAKING A STAB AT LCM APPROACH
-    // if (steps % 50_000 === 0 && steps > 1) console.log(steps)
+    currentNodes.forEach((node, i) => {
+      if (nodeEndsWith('Z', node)) {
+        if (loops[i].loopStart === -1) {
+          // Mark beginning of loop
+          loops[i].loopStart = steps
+        } else if (loops[i].loopLength === -1) {
+          // Mark end of loop
+          loops[i].loopLength = steps
+        }
+      }
+    })
 
-    // currentNodes.forEach((node, i) => {
-    //   // Sets how many steps until a cycle reaches the end.
-    //   if (nodeEndsWith('Z', node) && lcm[i].steps === -1) {
-    //     lcm[i].steps = steps
-    //   }
-
-    //   if (i > 0 && lcm[i].startingValue === node.origin) {
-    //     lcm[i].loopLength = steps
-    //   }
-    // })
-
-    // // Stops the Loop once all steps have been set
-    // if (lcm.filter((x) => x.steps === -1).length === 0) foundEnd = true
+    if (hasIteratedThroughAllLoops(loops)) foundEnd = true
 
     steps++
   }
 
-  return steps
+  return loops.map((x) => x.loopLength - x.loopStart)
 }
+
+const hasIteratedThroughAllLoops = (loops: NodeLoop[]) =>
+  loops.filter((x) => x.loopLength === -1).length === 0
 
 export const allNodesEndInZ = (nodes: NetworkNode[]): boolean => {
   for (let i = 0; i < nodes.length; i++) {

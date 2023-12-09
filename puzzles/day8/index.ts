@@ -8,4 +8,7 @@ const answer1 = Day8Part1(input)
 
 console.log('answer1: ', answer1)
 
-console.log('Day 8: part 2: ', Day8Part2(input))
+console.log(
+  'Day 8 | part 2 - Enter these numbers into a Least Common Multiple Tool to find answer:',
+  Day8Part2(input)
+)
