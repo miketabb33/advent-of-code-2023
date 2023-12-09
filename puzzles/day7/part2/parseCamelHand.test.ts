@@ -41,14 +41,20 @@ describe('Parse Camel Hand', () => {
     expect(results[4].wildType).toEqual('4ofKind')
   })
   it('should parse example', () => {
-    const input = 'JJJJJ 765'
+    const input = 'JJJJJ 765\nQ2KJJ 35'
     const results = parseCamelHand(input)
-    expect(results.length).toEqual(1)
+    expect(results.length).toEqual(2)
     expect(results[0].cards).toEqual('JJJJJ')
     expect(results[0].bid).toEqual(765)
     expect(results[0].type).toEqual('5ofKind')
     expect(results[0].wildCards).toEqual('JJJJJ')
     expect(results[0].wildType).toEqual('5ofKind')
+
+    expect(results[1].cards).toEqual('Q2KJJ')
+    expect(results[1].bid).toEqual(35)
+    expect(results[1].type).toEqual('1pair')
+    expect(results[1].wildCards).toEqual('Q2KQQ')
+    expect(results[1].wildType).toEqual('3ofKind')
   })
 })
 

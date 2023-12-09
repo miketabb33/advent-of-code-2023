@@ -23,12 +23,20 @@ export const parseWildCards = (cards: string): string => {
   const cardArr = cards.split('')
   let wildCards = ''
 
-  const mostPopularCard = groupCardsByLikeness(cardArr).sort(
+  const groupedCards = groupCardsByLikeness(cardArr).sort(
     (a, b) => b.length - a.length
-  )[0][0]
+  )
+
+  const mostPopularCard = () => {
+    const mostFrequentNumber = groupedCards[0][0]
+    if (mostFrequentNumber === 'J' && !!groupedCards[1] && !!groupedCards[1][0])
+      return groupedCards[1][0]
+
+    return mostFrequentNumber
+  }
 
   cardArr.forEach((card) => {
-    if (card === 'J') wildCards += mostPopularCard
+    if (card === 'J') wildCards += mostPopularCard()
     else wildCards += card
   })
   return wildCards
