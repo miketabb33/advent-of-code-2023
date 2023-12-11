@@ -1,6 +1,6 @@
 import { findNextTile } from './findNextTile'
 import { parsePipeMaze } from './parsePipeMaze'
-import { PipeMazeRow, PipeResult, TilePosition } from './type'
+import { PipeMazeRow, PipeResult } from './type'
 
 export const day10Part1 = (input: string) => {
   const loop: PipeResult[] = []
@@ -24,7 +24,7 @@ export const day10Part1 = (input: string) => {
   return loop.length / 2
 }
 
-const isSTile = (lastResult: PipeResult) => lastResult.tile.pipe === 'S'
+export const isSTile = (lastResult: PipeResult) => lastResult.tile.pipe === 'S'
 
 export const findSTile = (rows: PipeMazeRow[]): PipeResult => {
   for (let i = 0; i < rows.length; i++) {
