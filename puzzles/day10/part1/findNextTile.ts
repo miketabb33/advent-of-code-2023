@@ -29,23 +29,29 @@ const findNewDirection = (
   if (lastDirection === 'east') {
     if (nextTile === '-') return 'east'
     if (nextTile === '7') return 'south'
+    if (nextTile === 'J') return 'north'
+    if (nextTile === 'L') return 'north'
   }
 
   if (lastDirection === 'south') {
     if (nextTile === '|') return 'south'
     if (nextTile === 'J') return 'west'
+    if (nextTile === 'L') return 'east'
   }
 
   if (lastDirection === 'west') {
     if (nextTile === '-') return 'west'
     if (nextTile === 'L') return 'north'
+    if (nextTile === 'F') return 'south'
   }
 
   if (lastDirection === 'north') {
     if (nextTile === '|') return 'north'
+    if (nextTile === 'F') return 'east'
+    if (nextTile === '7') return 'west'
   }
 
-  throw new Error('direction not calculated')
+  throw new Error(`direction not calculated\n${nextTile}\n${lastDirection}`)
 }
 
 const findTileWithPosition = (position: TilePosition, maze: PipeMazeRow[]) => {
@@ -58,46 +64,46 @@ const findTileWithPosition = (position: TilePosition, maze: PipeMazeRow[]) => {
 }
 
 const findNextTilePosition = (lastResult: PipeResult) => {
-  const lastPos = lastResult.position
-  const lastTile = lastResult.tile.pipe
   const lastDir = lastResult.direction
 
-  const pos: TilePosition = { rowIndex: -1, tileIndex: -1 }
+  if (lastDir === 'east') return moveEast(lastResult)
+  if (lastDir === 'west') return moveWest(lastResult)
+  if (lastDir === 'south') return moveSouth(lastResult)
+  if (lastDir === 'north') return moveNorth(lastResult)
 
-  if (lastTile === 'S' || lastTile === '-') {
-    pos.rowIndex = lastPos.rowIndex
-    if (lastDir === 'east') pos.tileIndex = lastPos.tileIndex + 1
-    if (lastDir === 'west') pos.tileIndex = lastPos.tileIndex - 1
+  throw new Error(
+    `Failed to get a valid position.\n${lastResult.tile.pipe}\n${lastDir}`
+  )
+}
+
+const moveNorth = (lastResult: PipeResult): TilePosition => {
+  const lastPos = lastResult.position
+  return {
+    rowIndex: lastPos.rowIndex - 1,
+    tileIndex: lastPos.tileIndex,
   }
+}
 
-  if (lastTile === '7') {
-    if (lastDir === 'south') {
-      pos.rowIndex = lastPos.rowIndex + 1
-      pos.tileIndex = lastPos.tileIndex
-    }
+const moveSouth = (lastResult: PipeResult): TilePosition => {
+  const lastPos = lastResult.position
+  return {
+    rowIndex: lastPos.rowIndex + 1,
+    tileIndex: lastPos.tileIndex,
   }
+}
 
-  if (lastTile === '|') {
-    pos.tileIndex = lastPos.tileIndex
-    if (lastDir === 'south') pos.rowIndex = lastPos.rowIndex + 1
-    if (lastDir === 'north') pos.rowIndex = lastPos.rowIndex - 1
+const moveEast = (lastResult: PipeResult): TilePosition => {
+  const lastPos = lastResult.position
+  return {
+    rowIndex: lastPos.rowIndex,
+    tileIndex: lastPos.tileIndex + 1,
   }
+}
 
-  if (lastTile === 'J') {
-    if (lastDir === 'west') {
-      pos.rowIndex = lastPos.rowIndex
-      pos.tileIndex = lastPos.tileIndex - 1
-    }
+const moveWest = (lastResult: PipeResult): TilePosition => {
+  const lastPos = lastResult.position
+  return {
+    rowIndex: lastPos.rowIndex,
+    tileIndex: lastPos.tileIndex - 1,
   }
-
-  if (lastTile === 'L') {
-    if (lastDir === 'north') {
-      pos.rowIndex = lastPos.rowIndex - 1
-      pos.tileIndex = lastPos.tileIndex
-    }
-  }
-
-  if (pos.rowIndex === -1 || pos.tileIndex === -1)
-    throw new Error(`Failed to get a valid position.\n${lastTile}\n${lastDir}`)
-  return pos
 }

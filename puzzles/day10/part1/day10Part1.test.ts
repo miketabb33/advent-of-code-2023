@@ -14,8 +14,13 @@ describe('FindSTile', () => {
 })
 
 describe('Day 10 part 1', () => {
-  it('should find halfway mark', () => {
+  it('should find halfway mark for example 1', () => {
     const input = '.....\n.S-7.\n.|.|.\n.L-J.\n.....'
     expect(day10Part1(input)).toEqual(4)
+  })
+
+  it('should find halfway mark for example 2', () => {
+    const input = '..F7.\n.FJ|.\nSJ.L7\n|F--J\nLJ...'
+    expect(day10Part1(input)).toEqual(8)
   })
 })
