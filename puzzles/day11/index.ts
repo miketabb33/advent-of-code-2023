@@ -6,4 +6,4 @@ const input = readFileSync(`${__dirname}/input`).toString()
 
 console.log('answer1: ', day11Part1(input))
 
-console.log('answer2: ', day11Part2(input))
+console.log('answer2: ', day11Part2(input, 999_999))
