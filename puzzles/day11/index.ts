@@ -1,8 +1,6 @@
 import { readFileSync } from 'fs'
-import { parseIntoMatrix } from './part1/expandGalaxies'
+import { day11Part1 } from './part1/day11Part1'
 
 const input = readFileSync(`${__dirname}/input`).toString()
 
-const answer1 = parseIntoMatrix(input)
-
-console.log('answer1: ', answer1)
+console.log('answer1: ', day11Part1(input))

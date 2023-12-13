@@ -13,7 +13,7 @@ describe('Parse into matrix', () => {
   })
 })
 describe('Expand Galaxies', () => {
-  it('', () => {
+  it('expand', () => {
     const input =
       '...#......\n.......#..\n#.........\n..........\n......#...\n.#........\n.........#\n..........\n.......#..\n#...#.....'
     const matrix = parseIntoMatrix(input)
