@@ -3,7 +3,7 @@ type MirrorResult = {
   column: number
 }
 
-export const day13Part1 = (input: string): number => {
+export const day13Part2 = (input: string): number => {
   const result: MirrorResult = { row: 0, column: 0 }
   const patterns = parseMirrorPatterns(input)
 

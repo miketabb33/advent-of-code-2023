@@ -5,8 +5,8 @@ import {
   rotatePattern,
   isMirrorValid,
   parseMirrorPatterns,
-  day13Part1,
-} from './part1'
+  day13Part2,
+} from './part2'
 
 describe('Find Mirror Candidates', () => {
   it('should return 4 for example', () => {
@@ -175,6 +175,6 @@ describe('day13Part1', () => {
     const input =
       '#.##..##.\n..#.##.#.\n##......#\n##......#\n..#.##.#.\n..##..##.\n#.#.##.#.\n\n#...##..#\n#....#..#\n..##..###\n#####.##.\n#####.##.\n..##..###\n#....#..#'
 
-    expect(day13Part1(input)).toEqual(405)
+    expect(day13Part2(input)).toEqual(405)
   })
 })
