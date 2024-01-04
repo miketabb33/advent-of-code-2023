@@ -19,7 +19,10 @@ describe('Find Mirror Candidates', () => {
       '..##..###',
       '#....#..#',
     ]
-    expect(findMirrorCandidate(lines)).toEqual([4])
+    expect(findMirrorCandidate(lines)).toEqual([
+      { index: 1, smudgeInFirstRow: true },
+      { index: 4, smudgeInFirstRow: false },
+    ])
   })
 
   it('should return 5 for example', () => {
@@ -32,7 +35,9 @@ describe('Find Mirror Candidates', () => {
       '..##..##.',
       '#.#.##.#.',
     ]
-    expect(findMirrorCandidate(rotatePattern(lines))).toEqual([5])
+    expect(findMirrorCandidate(rotatePattern(lines))).toEqual([
+      { index: 5, smudgeInFirstRow: false },
+    ])
   })
 
   it('should return broken', () => {
@@ -51,7 +56,12 @@ describe('Find Mirror Candidates', () => {
       '###.##.',
       '.#..#.#',
     ]
-    expect(findMirrorCandidate(lines)).toEqual([5, 11])
+    expect(findMirrorCandidate(lines)).toEqual([
+      { index: 4, smudgeInFirstRow: true },
+      { index: 5, smudgeInFirstRow: false },
+      { index: 6, smudgeInFirstRow: true },
+      { index: 11, smudgeInFirstRow: false },
+    ])
   })
 })
 
@@ -78,7 +88,7 @@ describe('Get Mirror Result', () => {
       '#....#..#',
     ]
 
-    expect(getMirrorResult(lines)).toEqual({ row: 4, column: 0 })
+    expect(getMirrorResult(lines)).toEqual({ row: 1, column: 0 })
   })
 
   it('return example 2, is column reflection', () => {
@@ -92,7 +102,7 @@ describe('Get Mirror Result', () => {
       '#.#.##.#.',
     ]
 
-    expect(getMirrorResult(lines)).toEqual({ row: 0, column: 5 })
+    expect(getMirrorResult(lines)).toEqual({ row: 3, column: 0 })
   })
 
   it('return broken', () => {
@@ -112,51 +122,7 @@ describe('Get Mirror Result', () => {
       '.#..#.#',
     ]
 
-    expect(getMirrorResult(lines)).toEqual({ row: 11, column: 0 })
-  })
-})
-
-describe('validateMirror', () => {
-  it('should validate example 1', () => {
-    const lines = [
-      '#.##..##.',
-      '..#.##.#.',
-      '##......#',
-      '##......#',
-      '..#.##.#.',
-      '..##..##.',
-      '#.#.##.#.',
-    ]
-
-    expect(isMirrorValid(lines, 3)).toBe(false)
-  })
-
-  it('should validate rotated example 1', () => {
-    const lines = [
-      '#.##..##.',
-      '..#.##.#.',
-      '##......#',
-      '##......#',
-      '..#.##.#.',
-      '..##..##.',
-      '#.#.##.#.',
-    ]
-
-    expect(isMirrorValid(rotatePattern(lines), 5)).toBe(true)
-  })
-
-  it('should validate example 2', () => {
-    const lines = [
-      '#...##..#',
-      '#....#..#',
-      '..##..###',
-      '#####.##.',
-      '#####.##.',
-      '..##..###',
-      '#....#..#',
-    ]
-
-    expect(isMirrorValid(lines, 4)).toBe(true)
+    expect(getMirrorResult(lines)).toEqual({ row: 5, column: 0 })
   })
 })
 
@@ -170,11 +136,11 @@ describe('parse mirror patterns', () => {
   })
 })
 
-describe('day13Part1', () => {
+describe('day13Part2', () => {
   it('should resolve', () => {
     const input =
       '#.##..##.\n..#.##.#.\n##......#\n##......#\n..#.##.#.\n..##..##.\n#.#.##.#.\n\n#...##..#\n#....#..#\n..##..###\n#####.##.\n#####.##.\n..##..###\n#....#..#'
 
-    expect(day13Part2(input)).toEqual(405)
+    expect(day13Part2(input)).toEqual(400)
   })
 })
