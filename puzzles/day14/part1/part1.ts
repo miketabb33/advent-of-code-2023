@@ -1,24 +1,41 @@
 import { rotateClockwise } from '../../../utils'
 
-export const day14Part1 = (input: string) => {
+export const day14Part1 = (input: string): number => {
   const lines = input.split('\n').filter((x) => !!x)
-  const rotated = rotateClockwise(lines)
+  const rotatedLines = rotateClockwise(lines)
 
-  return `Ready, solve that puzzle! Input: ${lines}`
+  let sum = 0
+
+  rotatedLines.forEach((line) => {
+    const tiltedLine = tiltLine(line)
+    sum += calculateLoad(tiltedLine)
+  })
+
+  return sum
+}
+
+export const calculateLoad = (line: string): number => {
+  let sum = 0
+  line.split('').forEach((x, i) => {
+    if (x === 'O') sum += i + 1
+  })
+  return sum
 }
 
 export const tiltLine = (line: string) => {
   const lineArr = line.split('')
+  for (let i = line.length - 1; i >= 0; i--) {
+    if (line[i] === 'O') rollUntilUnable(lineArr, i)
+  }
+  return lineArr.join('')
+}
 
+const rollUntilUnable = (lineArr: string[], index: number) => {
   let isLooping = true
   while (isLooping) {
-    const index = lineArr.indexOf('O')
-    if (index === -1) break
-    const rollResult = rollOBy1(lineArr, index)
-    isLooping = rollResult
+    isLooping = rollOBy1(lineArr, index)
+    index++
   }
-
-  return lineArr.join('')
 }
 
 const rollOBy1 = (lineArr: string[], index: number): boolean => {
