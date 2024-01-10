@@ -1,16 +1,17 @@
-export const day15Part2 = (input: string) => {
-  const steps = input.trim().split(',')
-  let sum = 0
-  steps.forEach((step) => (sum += calculateStep(step)))
-  return sum
+type Lense = {
+  id: string
+  focalLength: number
 }
 
-export const calculateStep = (step: string): number => {
-  let currentValue = 0
-  step.split('').forEach((char) => {
-    currentValue += char.charCodeAt(0)
-    currentValue *= 17
-    currentValue %= 256
-  })
-  return currentValue
+export const day15Part2 = (input: string) => {
+  const steps = input.trim().split(',')
+  const boxSeries = makeBoxSeries()
+  boxSeries[0].push({ id: 'h', focalLength: 3 })
+  console.log(boxSeries[0])
+}
+
+export const makeBoxSeries = (): Lense[][] => {
+  const boxSeries: Lense[][] = []
+  for (let i = 0; i < 256; i++) boxSeries.push([])
+  return boxSeries
 }
