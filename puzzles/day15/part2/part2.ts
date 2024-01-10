@@ -1,4 +1,4 @@
-export const day15Part1 = (input: string) => {
+export const day15Part2 = (input: string) => {
   const steps = input.trim().split(',')
   let sum = 0
   steps.forEach((step) => (sum += calculateStep(step)))
