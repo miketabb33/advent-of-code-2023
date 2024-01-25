@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-type Split = {
+type Vector = {
   direction: Direction
   position: Position
 }
@@ -12,19 +12,87 @@ type Position = {
 
 export type Direction = 'left' | 'right' | 'up' | 'down'
 
-export const day16Part1 = (input: string) => {
-  const lines = input.split('\n').filter((x) => !!x)
-
+const runBeams = (lines: string[], vector: Vector, limit: number) => {
   const energizedTiles = new EnergizedTiles()
-  const beamGroup = new BeamGroup([new Beam({ x: 0, y: 0 }, 'right', lines)])
-
+  const beamGroup = new BeamGroup([
+    new Beam(vector.position, vector.direction, lines),
+  ])
   let i = 0
-  while (i < 550) {
+  while (i < limit) {
     frameBeam(beamGroup, energizedTiles)
     i++
   }
-
   return energizedTiles.count()
+}
+
+export const day16Part2 = (input: string) => {
+  const lines = input.split('\n').filter((x) => !!x)
+
+  const results: number[] = []
+
+  results.push(
+    runBeams(lines, { position: { x: 0, y: 0 }, direction: 'right' }, 550)
+  ) //6978 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      { position: { x: 0, y: lines.length - 1 }, direction: 'right' },
+      1000
+    )
+  ) // 47 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      { position: { x: 0, y: lines.length - 1 }, direction: 'up' },
+      1000
+    )
+  ) // 15 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      { position: { x: lines[0].length - 1, y: 0 }, direction: 'left' },
+      1000
+    )
+  ) // 3 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      {
+        position: { x: lines[0].length - 1, y: lines.length - 1 },
+        direction: 'left',
+      },
+      1000
+    )
+  ) // 2 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      {
+        position: { x: lines[0].length - 1, y: lines.length - 1 },
+        direction: 'up',
+      },
+      1000
+    )
+  ) // 76 - Good
+
+  results.push(
+    runBeams(
+      lines,
+      { position: { x: lines[0].length - 1, y: 0 }, direction: 'down' },
+      500
+    )
+  ) // 7000
+
+  results.push(
+    runBeams(lines, { position: { x: 0, y: 0 }, direction: 'down' }, 500)
+  ) //6975
+
+  return Math.max(...results)
 }
 
 export const frameBeam = (
@@ -39,7 +107,7 @@ export const frameBeam = (
 
 export class BeamGroup {
   private beams: Beam[]
-  private splitCache: Split[] = []
+  private splitCache: Vector[] = []
 
   constructor(initBeams: Beam[]) {
     this.beams = initBeams

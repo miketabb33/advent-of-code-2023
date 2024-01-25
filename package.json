@@ -2,6 +2,7 @@
   "name": "advent-of-code-2023",
   "module": "index.ts",
   "devDependencies": {
+    "@types/uuid": "^9.0.7",
     "bun-types": "latest",
     "prettier": "^3.1.0"
   },
@@ -18,5 +19,8 @@
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
   }
 }

@@ -5,14 +5,6 @@ import { readFileSync } from 'fs'
 const input = readFileSync(`${__dirname}/../exampleInput`).toString()
 const lines = input.split('\n').filter((x) => !!x)
 
-describe('day 16 part 1', () => {
-  it('should', () => {
-    console.log('HERE:')
-    const result = day16Part1(input)
-    // expect(result).toEqual(46)
-  })
-})
-
 describe('Frame Beam', () => {
   it('should go', () => {
     const energizedTiles = new EnergizedTiles()
@@ -31,6 +23,49 @@ describe('Frame Beam', () => {
     expect(beams.getBeams()[1].getDirection()).toEqual('down')
     expect(beams.getBeams()[1].getPosition()).toEqual({ x: 1, y: 1 })
     expect(energizedTiles.count()).toEqual(2)
+  })
+
+  it('should go without split', () => {
+    const energizedTiles = new EnergizedTiles()
+    const beams = new BeamGroup([new Beam({ x: 0, y: 5 }, 'right', lines)])
+
+    frameBeam(beams, energizedTiles)
+    expect(beams.getBeams().length).toEqual(1)
+    expect(beams.getBeams()[0].getDirection()).toEqual('right')
+    expect(beams.getBeams()[0].getPosition()).toEqual({ x: 1, y: 5 })
+    expect(energizedTiles.count()).toEqual(1)
+
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    expect(beams.getBeams().length).toEqual(1)
+    expect(beams.getBeams()[0].getDirection()).toEqual('right')
+    expect(beams.getBeams()[0].getPosition()).toEqual({ x: 9, y: 5 })
+    expect(energizedTiles.count()).toEqual(9)
+
+    frameBeam(beams, energizedTiles)
+    expect(beams.getBeams().length).toEqual(1)
+    expect(beams.getBeams()[0].getDirection()).toEqual('down')
+    expect(beams.getBeams()[0].getPosition()).toEqual({ x: 9, y: 6 })
+    expect(energizedTiles.count()).toEqual(10)
+
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    frameBeam(beams, energizedTiles)
+    expect(beams.getBeams().length).toEqual(1)
+    expect(beams.getBeams()[0].getDirection()).toEqual('right')
+    expect(beams.getBeams()[0].getPosition()).toEqual({ x: 10, y: 8 })
+    expect(energizedTiles.count()).toEqual(13)
+
+    frameBeam(beams, energizedTiles)
+    expect(beams.getBeams().length).toEqual(0)
+    expect(energizedTiles.count()).toEqual(13)
+    expect(beams.isEmpty()).toBeTrue()
   })
 })
 
@@ -205,17 +240,17 @@ describe('Beam', () => {
       })
       it('when going up, should update right and create split', () => {
         const beam = new Beam({ x: 2, y: 1 }, 'up', lines)
-        const split = beam.updateDirectionAndGetSplitWhenAvailable()
+        const result = beam.updateDirectionAndGetSplitWhenAvailable()
         expect(beam.getDirection()).toEqual('right')
-        expect(split?.getPosition()).toEqual(beam.getPosition())
-        expect(split?.getDirection()).toEqual('left')
+        expect(result?.newBeam.getPosition()).toEqual(beam.getPosition())
+        expect(result?.newBeam.getDirection()).toEqual('left')
       })
       it('when going down, should update right and create split', () => {
         const beam = new Beam({ x: 2, y: 1 }, 'up', lines)
-        const split = beam.updateDirectionAndGetSplitWhenAvailable()
+        const result = beam.updateDirectionAndGetSplitWhenAvailable()
         expect(beam.getDirection()).toEqual('right')
-        expect(split?.getPosition()).toEqual(beam.getPosition())
-        expect(split?.getDirection()).toEqual('left')
+        expect(result?.newBeam.getPosition()).toEqual(beam.getPosition())
+        expect(result?.newBeam.getDirection()).toEqual('left')
       })
     })
     describe('|', () => {
@@ -231,25 +266,25 @@ describe('Beam', () => {
       })
       it('when going right, should update up and create split', () => {
         const beam = new Beam({ x: 1, y: 0 }, 'right', lines)
-        const split = beam.updateDirectionAndGetSplitWhenAvailable()
+        const result = beam.updateDirectionAndGetSplitWhenAvailable()
         expect(beam.getDirection()).toEqual('up')
-        expect(split?.getPosition()).toEqual(beam.getPosition())
-        expect(split?.getDirection()).toEqual('down')
+        expect(result?.newBeam.getPosition()).toEqual(beam.getPosition())
+        expect(result?.newBeam.getDirection()).toEqual('down')
       })
       it('when going left, should update up and create split', () => {
         const beam = new Beam({ x: 1, y: 0 }, 'left', lines)
-        const split = beam.updateDirectionAndGetSplitWhenAvailable()
+        const result = beam.updateDirectionAndGetSplitWhenAvailable()
         expect(beam.getDirection()).toEqual('up')
-        expect(split?.getPosition()).toEqual(beam.getPosition())
-        expect(split?.getDirection()).toEqual('down')
+        expect(result?.newBeam.getPosition()).toEqual(beam.getPosition())
+        expect(result?.newBeam.getDirection()).toEqual('down')
       })
-      // it('when going down, should update right and create split', () => {
-      //   const beam = new Beam({ x: 2, y: 1 }, 'up', lines)
-      //   const split = beam.updateDirection()
-      //   expect(beam.getDirection()).toEqual('right')
-      //   expect(split?.getPosition()).toEqual(beam.getPosition())
-      //   expect(split?.getDirection()).toEqual('left')
-      // })
+      it('when going down, should update right and create split', () => {
+        const beam = new Beam({ x: 2, y: 1 }, 'up', lines)
+        const result = beam.updateDirectionAndGetSplitWhenAvailable()
+        expect(beam.getDirection()).toEqual('right')
+        expect(result?.newBeam.getPosition()).toEqual(beam.getPosition())
+        expect(result?.newBeam.getDirection()).toEqual('left')
+      })
     })
   })
 
