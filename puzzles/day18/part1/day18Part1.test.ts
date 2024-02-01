@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { describe, expect, it } from 'bun:test'
 import { DigMap, parseDigPlans } from './day18Part1'
+import { parseDigPlans2 } from '../day18Part2'
 
 const input = readFileSync(`${__dirname}/../exampleInput`).toString()
 const lines = input.split('\n').filter((x) => !!x)
@@ -97,5 +98,12 @@ describe('Dig Map', () => {
     const digMap = DigMap.make(digPlans)
     const matrix = digMap.getDigPlanMatrix()
     expect(digMap.print(matrix)).toEqual(examplePrint)
+  })
+
+  it('2', () => {
+    const result = parseDigPlans2(lines)
+    expect(result[0].direction).toEqual('right')
+    expect(result[0].meters).toEqual(461937)
+    expect(result[0].color).toEqual('(#70c710)')
   })
 })

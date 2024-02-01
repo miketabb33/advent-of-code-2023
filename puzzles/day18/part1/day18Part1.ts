@@ -15,7 +15,7 @@ type Box = {
   maxY: number
 }
 
-type DigPlanItem = {
+export type DigPlanItem = {
   direction: Direction
   meters: number
   color: string
