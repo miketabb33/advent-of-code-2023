@@ -11,6 +11,7 @@ type Coordinate = {
 
 type Brick = {
   id: number
+  type: 'row' | 'column' | 'vertical'
   coord1: Coordinate
   coord2: Coordinate
 }
@@ -20,14 +21,32 @@ type BrickParseResults = {
   size: number
 }
 
-export const starter = (input: string) => {
+export const day22Part1 = (input: string): number => {
   const lines = input.split('\n').filter((x) => !!x)
   const parsedBricks = parseBrickInput(lines)
   const settledBricks = dropBricks(parsedBricks)
 
-  // Count bricks from settled bricks which are safe to disintegrate
+  const maxZCoord1 = Math.max(...settledBricks.map((brick) => brick.coord1.z))
+  const maxZCoord2 = Math.max(...settledBricks.map((brick) => brick.coord2.z))
+  const maxZ = Math.max(maxZCoord1, maxZCoord2)
 
-  return []
+  let disintegratedBricks = 0
+
+  for (let currentZ = 1; currentZ <= maxZ; currentZ++) {
+    const brickLayer = settledBricks.filter(
+      (brick) => brick.coord1.z === currentZ || brick.coord2.z === currentZ
+    )
+
+    if (brickLayer.length !== 1 && currentZ !== maxZ) {
+      disintegratedBricks += brickLayer.length
+    }
+
+    if (currentZ === maxZ) {
+      disintegratedBricks += brickLayer.length
+    }
+  }
+
+  return disintegratedBricks
 }
 
 export const dropBricks = (parsedBricks: BrickParseResults) => {
@@ -44,6 +63,7 @@ export const dropBricks = (parsedBricks: BrickParseResults) => {
 
     const newBrick: Brick = {
       id: brick.id,
+      type: brick.type,
       coord1: { ...brick.coord1, z: brick.coord1.z - dropDistance },
       coord2: { ...brick.coord2, z: brick.coord2.z - dropDistance },
     }
@@ -90,10 +110,9 @@ const initTopography = (size: number) => {
 }
 
 export const getBrickTopDown = (brick: Brick): Position[] => {
-  const isColumn = brick.coord1.x === brick.coord2.x
   const positions: Position[] = []
 
-  if (isColumn) {
+  if (brick.type === 'column') {
     const x = brick.coord1.x
     const startY = brick.coord1.y
     const endY = brick.coord2.y
@@ -112,20 +131,17 @@ export const getBrickTopDown = (brick: Brick): Position[] => {
 }
 
 export const getBrickCoordinates = (brick: Brick): Coordinate[] => {
-  const isColumn = brick.coord1.x === brick.coord2.x
-  const isRow = brick.coord1.y === brick.coord2.y
   const coordinates: Coordinate[] = []
 
-  if (isColumn && isRow) {
+  if (brick.type === 'vertical') {
     const x = brick.coord1.x
     const y = brick.coord1.y
     const startZ = brick.coord1.z
     const endZ = brick.coord2.z
-    console.log(startZ)
     for (let i = startZ; i <= endZ; i++) {
       coordinates.push({ x, y, z: i })
     }
-  } else if (isColumn) {
+  } else if (brick.type === 'column') {
     const x = brick.coord1.x
     const z = brick.coord1.z
     const startY = brick.coord1.y
@@ -133,7 +149,7 @@ export const getBrickCoordinates = (brick: Brick): Coordinate[] => {
     for (let i = startY; i <= endY; i++) {
       coordinates.push({ x, y: i, z })
     }
-  } else if (isRow) {
+  } else if (brick.type === 'row') {
     const y = brick.coord1.y
     const z = brick.coord1.z
     const startX = brick.coord1.x
@@ -166,7 +182,10 @@ export const parseBrickInput = (lines: string[]): BrickParseResults => {
   })
   const sortedBrickCoords = bricksCoords.sort((a, b) => a[0].z - b[0].z)
   const bricks = sortedBrickCoords.map((coords, i) => {
-    const brick: Brick = { id: i, coord1: coords[0], coord2: coords[1] }
+    const isColumn = coords[0].x === coords[1].x
+    const isRow = coords[0].y === coords[1].y
+    const type = isRow && isColumn ? 'vertical' : isColumn ? 'column' : 'row'
+    const brick: Brick = { id: i, coord1: coords[0], coord2: coords[1], type }
     return brick
   })
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { readFileSync } from 'fs'
 import {
+  day22Part1,
   dropBricks,
   getBrickCoordinates,
   getBrickTopDown,
@@ -11,6 +12,13 @@ const input = readFileSync(`${__dirname}/../exampleInput`).toString()
 const lines = input.split('\n').filter((x) => !!x)
 const parsedBricks = parseBrickInput(lines)
 const bricks = parsedBricks.bricks
+
+describe('starter', () => {
+  it('should return example', () => {
+    const result = day22Part1(input)
+    expect(result).toEqual(5)
+  })
+})
 
 describe('drop bricks', () => {
   it('should drop', () => {
@@ -125,6 +133,7 @@ describe('Parse Brick Input', () => {
     expect(result[0].coord2.x).toEqual(1)
     expect(result[0].coord2.y).toEqual(2)
     expect(result[0].coord2.z).toEqual(1)
+    expect(result[0].type).toEqual('column')
 
     expect(result[1].id).toEqual(1)
     expect(result[1].coord1.x).toEqual(0)
@@ -133,6 +142,7 @@ describe('Parse Brick Input', () => {
     expect(result[1].coord2.x).toEqual(2)
     expect(result[1].coord2.y).toEqual(0)
     expect(result[1].coord2.z).toEqual(2)
+    expect(result[1].type).toEqual('row')
 
     expect(result[2].id).toEqual(2)
     expect(result[2].coord1.x).toEqual(0)
@@ -153,5 +163,6 @@ describe('Parse Brick Input', () => {
 
     expect(result[6].id).toEqual(6)
     expect(result[6].coord1.z).toEqual(8)
+    expect(result[6].type).toEqual('vertical')
   })
 })
