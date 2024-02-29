@@ -26,6 +26,25 @@ export const day23Part1 = (input: string) => {
   return Math.max(...randomHikeStep)
 }
 
+export const day23Part2 = (input: string) => {
+  const randomHikeStep: number[] = []
+
+  for (let i = 0; i < 50; i++) {
+    const maze = new MazeMap(input)
+    const current = new Current()
+
+    let i = 0
+    while (current.hiking()) {
+      const nextPoints = maze.findNextPoints(current.point())
+      current.move2(nextPoints)
+    }
+
+    randomHikeStep.push(current.steps())
+  }
+
+  return Math.max(...randomHikeStep)
+}
+
 export class MazeMap {
   lines: string[]
 
@@ -79,21 +98,43 @@ export class Current {
     }
   }
 
+  move2 = (items: MapItem[]) => {
+    const validNextMoves = this.findValidMoves(items, true)
+
+    if (validNextMoves.length === 0) this.isHiking = false
+
+    if (validNextMoves.length === 1) {
+      const move = validNextMoves[0]
+      this.pointHistory.push(move.point)
+    }
+
+    if (validNextMoves.length > 1) {
+      const randomIndex = Math.floor(Math.random() * validNextMoves.length)
+      const selectedMove = validNextMoves[randomIndex]
+
+      this.pointHistory.push(selectedMove.point)
+    }
+  }
+
   hiking = () => this.isHiking
   steps = () => this.pointHistory.length - 1
 
-  private findValidMoves = (items: MapItem[]) => {
+  private findValidMoves = (items: MapItem[], isPart2: boolean = false) => {
     const validNextMoves: MapItem[] = []
     items.forEach((item) => {
       const existingItem = this.pointHistory.find(
         (point) => point.x === item.point.x && point.y === item.point.y
       )
 
-      const isGoingUpOnV = item.value === 'v' && item.point.y < this.point().y
+      if (!isPart2) {
+        const isGoingUpOnV = item.value === 'v' && item.point.y < this.point().y
+        const isGoingLeftOnRightArrow =
+          item.value === '>' && item.point.x < this.point().x
 
-      const isGoingLeftOnRightArrow =
-        item.value === '>' && item.point.x < this.point().x
-      if (!existingItem && !isGoingUpOnV && !isGoingLeftOnRightArrow) {
+        if (!existingItem && !isGoingUpOnV && !isGoingLeftOnRightArrow) {
+          validNextMoves.push(item)
+        }
+      } else {
         validNextMoves.push(item)
       }
     })

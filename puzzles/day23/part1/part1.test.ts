@@ -1,13 +1,21 @@
 import { describe, expect, it } from 'bun:test'
 import { readFileSync } from 'fs'
-import { Current, MazeMap, Point, day23Part1 } from './part1'
+import { Current, MazeMap, Point, day23Part1, day23Part2 } from './part1'
 
 const input = readFileSync(`${__dirname}/../exampleInput`).toString()
 const map = new MazeMap(input)
 const startPoint: Point = { x: 1, y: 0 }
 
 describe('Start', () => {
-  expect(day23Part1(input)).toEqual(94)
+  it('Should', () => {
+    expect(day23Part1(input)).toEqual(94)
+  })
+})
+
+describe('Start', () => {
+  it('Should', () => {
+    expect(day23Part2(input)).toEqual(154)
+  })
 })
 
 describe('Maze Map', () => {
